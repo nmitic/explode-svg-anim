@@ -9,10 +9,9 @@ To run the project type the fallowing into the root of the project:
 ```
 npm install
 npm run watch
-
 ```
 
 
-3. Open index.html
+### Open index.html
 
-And please don't press the red button.
+*And please don't press the red button.*
