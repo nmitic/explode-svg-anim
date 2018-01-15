@@ -6,8 +6,13 @@ The idea was to make some sort of "expode" animation by transforming svg paths i
 
 To run the project type the fallowing into the root of the project:
 
-1. npm install or yarn install
-2. npm run watch or yarn watch
+```
+npm install
+npm run watch
+
+```
+
+
 3. Open index.html
 
 And please don't press the red button.
