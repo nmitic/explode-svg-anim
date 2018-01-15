@@ -1,0 +1,147 @@
+$transition-global: all cubic-bezier(.89,.36,.44,1.44) 1.8s;
+$anim_prop-scale-to: scale(1.8);
+
+$pathsLength: 65;
+
+$svgWidht: 600px;
+$svgHeight: 600px;
+
+//General styles, not related to explode animation
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.explodion-trigger {
+  &:before {
+    content: 'Don\'t press';
+  }
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: tomato;
+  cursor: pointer;
+  margin-top: 50px;
+  font-size: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+
+  position: relative;
+  z-index: 2;
+
+  transform: scale(1);
+
+  &.explode-up {
+    &:before {
+      content: 'Don\'t let go';
+    }
+    animation:
+      explode-btn-up 0.4s cubic-bezier(.89,.36,.16,1.96) forwards,
+      shake 0.4s cubic-bezier(.89,.36,.44,1.44) 0.4s forwards infinite alternate;
+  }
+  &.explode-down {
+    animation: explode-btn-down 0.4s cubic-bezier(.89,.36,.16,1.96) forwards;
+  }
+}
+@keyframes explode-btn-up {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: $anim_prop-scale-to;
+    background-color: lightgreen;
+  }
+}
+@keyframes explode-btn-down {
+  0% {
+    transform: $anim_prop-scale-to;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translate(2px, 2px) $anim_prop-scale-to;
+  }
+  10% {
+    transform: translate(0px, 2px) $anim_prop-scale-to;
+  }
+  20% {
+    transform: translate(2px, 0px) $anim_prop-scale-to;
+  }
+  30% {
+    transform: translate(-2px, 2px) $anim_prop-scale-to;
+  }
+  40% {
+    transform: translate(2px, -2px) $anim_prop-scale-to;
+  }
+  50% {
+    transform: translate(3px, 3px) $anim_prop-scale-to;
+  }
+  60% {
+    transform: translate(0px, 3px) $anim_prop-scale-to;
+  }
+  70% {
+    transform: translate(3px, 0px) $anim_prop-scale-to;
+  }
+  80% {
+    transform: translate(-3px, 0px) $anim_prop-scale-to;
+  }
+  90% {
+    transform: translate(0px, -3px) $anim_prop-scale-to;
+  }
+  100% {
+    transform: translate(0px, 0px) $anim_prop-scale-to;
+  }
+}
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+path {
+  transform-origin: center;
+  transition: $transition-global;
+}
+
+@function randomCoordinate($maxValue) {
+  $random: random(2);
+
+  @if $random == 1 {
+    @return  $maxValue + 1;
+  } @else {
+    @return (-1 * $maxValue) - 1;
+  }
+};
+
+@mixin delayExplodePaths() {
+  @for $i from 1 through $pathsLength {
+    path:nth-child(#{$i}) {
+      transition-delay: $i/200 + s;
+    }
+  }
+}
+
+@mixin explodePaths($pathsLength) {
+  @for $i from 1 through $pathsLength {
+    .explode {
+      path:nth-child(#{$i}) {
+        transform: translate(randomCoordinate($svgWidht), randomCoordinate($svgHeight));
+      }
+    }
+  }
+}
+
+@include delayExplodePaths();
+@include explodePaths($pathsLength);
